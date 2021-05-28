@@ -1,0 +1,76 @@
+{% load static %}
+{% load bootstrap4 %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    {% bootstrap_css %}
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <title>Adicionar Música à Playlist</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #00DED3;">
+    <a class="navbar-brand" href="{% url 'index' %}">
+        <img src="{% static 'images/weni.png' %}" width="40" height="30" class="d-inline-block align-top" alt="">
+        Desafio Weni
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Alterna navegação">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'index' %}">Spotify <span class="sr-only">(Página atual)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'contato' %}">Sobre mim</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+     <br>
+     <center><h1>Adicionar música à Playlist</h1></center>
+     <br>
+     <a href="{% url 'search_item' %}" class="btn btn-info btn-lg" role="button">Voltar</a>
+     <br><br>
+     <table class="table table-sm table-dark table-striped">
+        <thead>
+        <tr style="background-color: #FFFFFF !important;"><td colspan="6"><center><a href="{{ link_playlist }}" target="_blank">Clique aqui para abrir a playlist</a></center></td></tr>
+        <tr>
+            <th scope="col">Capa</th>
+            <th scope="col">Nome da Música</th>
+            <th scope="col">Artista</th>
+            <th scope="col">Álbum</th>
+            <th scope="col">Ouça no Spotify</th>
+            <th scope="col">Adicionar à Playlist</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in result.json.tracks.items %}
+                <td><img src="{{ item.album.images.2.url }}" alt="Capa"></td>
+                <td scope="row" style="text-decoration: none;">{{ item.name }}</td>
+                <td>{{ item.artists.0.name }}</td>
+                <td>{{ item.album.name }}</td>
+                <td><center><a href="{{ item.external_urls.spotify }}" target="_blank">Link</a></center></td>
+                <td>
+                    <form action="{% url 'add_success' %}" method="post"  class="form" autocomplete="off">
+                        {% csrf_token %}
+                        <input type="hidden" value="{{ item.id }}" name="track_id" id="track_id">
+                        {% buttons %}
+                            <center><button type="submit" class="btn btn-info btn-lg"> <i class="fas fa-plus"></i>  </button></center>
+                        {% endbuttons %}
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% bootstrap_javascript jquery='full' %}
+</body>
+</html>
