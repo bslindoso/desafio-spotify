@@ -1,0 +1,70 @@
+{% load static %}
+{% load bootstrap4 %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+    {% bootstrap_css %}
+    <title>{{nome_develop}}</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #00DED3;">
+    <a class="navbar-brand" href="{% url 'index' %}">
+        <img src="{% static 'images/weni.png' %}" width="40" height="30" class="d-inline-block align-top" alt="">
+        Desafio Weni
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Alterna navegação">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'index' %}">Spotify</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="{% url 'contato' %}">Sobre mim <span class="sr-only">(Página atual)</span></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+
+    <div class="jumbotron" style="padding: 32px;">
+        {% bootstrap_messages %}
+        <h1 class="display-4">Olá, galerinha!</h1>
+
+        <div class="row">
+            <div class="col-sm">
+                <center><img src="{% static 'images/bruno.jpg' %}" alt="Foto de Bruno Lindoso" class="img-thumbnail" style="width: 85%" id="lindoso"></center>
+            </div>
+
+            <div class="col-sm">
+                <p class="lead">Me chamo <strong>Bruno Lindoso</strong> e sou Analista de Implantação na Weni. </p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item list-group-item-info"><strong>Contato:</strong></li>
+                    <li class="list-group-item"><strong>E-mail:</strong> bruno.lindoso@weni.ai</li>
+                    <li class="list-group-item"><strong>Função:</strong> Analista de Implantação
+                        <img src="{% static 'images/desbravadores.jpg' %}" alt="Desbravadores" id="desbravadores" title="Time Desbravadores">
+                    </li>
+                    <li class="list-group-item"><strong>Time:</strong> Serviços/Kraken
+                        <img src="{% static 'images/kraken.png' %}" alt="Kraken" id="kraken" title="Time Kraken">
+                    </li>
+                    <li class="list-group-item"><strong>Empresa:</strong> Weni
+                        <a href="https://weni.ai" target="_blank"><img src="{% static 'images/weni-logo.png' %}" alt="Weni" id="weni" title="Weni"></a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+        <hr class="my-4">
+        <p>Este projeto foi desenvolvido como <strong>teste técnico</strong> para a vaga de Suporte N3, que visa avaliar meus conhecimentos na linguagem Python com o uso do Django Framework.</p>
+        <a class="btn btn-info btn-lg" href="{% url 'index' %}" role="button">Voltar</a>
+
+    </div>
+</div>
+
+{% bootstrap_javascript jquery='full' %}
+</body>
+</html>
