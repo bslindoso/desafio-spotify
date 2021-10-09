@@ -7,13 +7,17 @@ import requests
 import base64
 from urllib.parse import urlencode
 from .forms import SearchForm, AddMusicForm
-from .models import Playlist, ClientToken, AccessTokenScoped
+from .models import AccessTokenScoped
+import environ
 
+#Environ Settings
+env = environ.Env()
+environ.Env.read_env()
 
-playlist = Playlist.objects.all() #Recebe todos os objetos da Playlist
-playlist_id = playlist.get() # ID DA PLAYLIST - DESAFIO N3 - SALVO NO DB
-clientToken = ClientToken.objects.all() #Recebe todos os objetos do Cliente (necessário para fazer a autenticação)
-redirect_uri = "http://127.0.0.1:8000/"
+playlist_id = env.str('PLAYLIST_ID')
+client_id = env.str('CLIENT_ID')
+client_secret = env.str('CLIENT_SECRET')
+redirect_uri = env.str('REDIRECT_URI')
 
 # Cadastra um usuário (sem permissão pro admin)
 def add_user(request):
@@ -49,8 +53,7 @@ def user_out(request):
 def authScope(code):
 
     # Credenciais do APP
-    client_id = clientToken[0].client_id  # SALVO NO DB
-    client_secret = clientToken[0].client_secret  # SALVO NO DB
+    global client_id, client_secret
     client_creds = f"{client_id}:{client_secret}"
     client_creds_b64 = base64.b64encode(client_creds.encode())
 
@@ -81,8 +84,7 @@ def authScope(code):
 def auth():
 
     # Credenciais do APP
-    client_id = clientToken[0].client_id # SALVO NO DB
-    client_secret = clientToken[0].client_secret # SALVO NO DB
+    global client_id, client_secret
     client_creds = f"{client_id}:{client_secret}"
     client_creds_b64 = base64.b64encode(client_creds.encode())
 
