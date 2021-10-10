@@ -13,16 +13,16 @@
             <li class="nav-item active">
                 <a class="nav-link" href="{% url 'index' %}">Spotify <span class="sr-only">(Página atual)</span></a>
             </li>
-            {%if logado != True %}
+            {%if logged != True %}
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'add_user' %}">Cadastrar Usuário</a>
             </li>
             {%endif%}
 
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'contato' %}">Sobre mim</a>
+                <a class="nav-link" href="{% url 'contact' %}">Sobre mim</a>
             </li>
-            {%if logado == True %}
+            {%if logged == True %}
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'user_out' %}">Sair</a>
             </li>

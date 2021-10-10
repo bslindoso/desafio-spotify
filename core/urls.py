@@ -1,10 +1,10 @@
 from django.urls import path
 
-from .views import index, contato, add_item_playlist, search_item, add_success, del_success, add_user, user_in, user_out
+from .views import index, contact, add_item_playlist, search_item, add_success, del_success, add_user, user_in, user_out
 
 urlpatterns = [
     path('', index, name='index'),
-    path('contato/', contato, name='contato'),
+    path('contact/', contact, name='contact'),
     path('add_item_playlist/', add_item_playlist, name='add_item_playlist'),
     path('search_item/', search_item, name='search_item'),
     path('adicionado_com_sucesso/', add_success, name='add_success'),

@@ -8,7 +8,7 @@
     {% bootstrap_css %}
     <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
-    <title>{{nome_develop}} - TESTE</title>
+    <title>{{developer}} - TESTE</title>
 </head>
 <body>
     
@@ -27,13 +27,13 @@
                 <hr>
             </div>
             <figure class="figure float-center">
-              <img src="{{ capa_playlist }}" class="figure-img img-fluid rounded"  alt="capa playlist" title="Capa da Playlist" id="capa_playlist">
+              <img src="{{ playlist_cover }}" class="figure-img img-fluid rounded"  alt="capa playlist" title="Capa da Playlist" id="playlist_cover">
               <strong><figcaption class="figure-caption text-center">CAPA DA PLAYLIST</figcaption></strong>
             </figure>
 
         </div>
         <div class="col-lg-8 col-md-7 col-sm-6">
-            <center><h1>Playlist: {{ nome_playlist }}</h1></center>
+            <center><h1>Playlist: {{ playlist_name }}</h1></center>
             <br>
             <center>
                 <input type="button" class="btn btn-danger btn-lg" onclick="requestAuthorization()" value="Obtenha o seu Token">
