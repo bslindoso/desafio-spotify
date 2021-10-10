@@ -1,17 +1,7 @@
 {% load static %}
 {% load bootstrap4 %}
 
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    {% bootstrap_css %}
-    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
-    <title>Adicionar Música à Playlist</title>
-</head>
-<body>
-    
-    {% include 'navbar.html' %}
+{% include 'head.html' %}
 
 <div class="container">
     {% bootstrap_messages %}
@@ -31,6 +21,5 @@
 
 
 </div>
-{% bootstrap_javascript jquery='full' %}
-</body>
-</html>
+
+{% include 'footer.html' %}

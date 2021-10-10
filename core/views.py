@@ -54,7 +54,6 @@ def index(request):
 
         # Cria variiável de contexto a ser enviada para o template
         context = {
-            'developer': 'Lindoso',
             'playlist_name': playlist_name,
             'playlist_cover': playlist_cover,
             'link_playlist': link_playlist,
@@ -67,12 +66,10 @@ def index(request):
 def contact(request):
     if str(request.user) == 'AnonymousUser': #verifica se o usuário está logado no sistema
             context = {
-            'developer' : 'Lindoso',
             'logged' : False
         }
     else:
         context = {
-            'developer' : 'Lindoso',
             'logged' : True
         }
     return render(request, 'contact.html', context)

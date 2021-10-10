@@ -1,15 +1,7 @@
 {% load static %}
 {% load bootstrap4 %}
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
-    {% bootstrap_css %}
-    <title>{{developer}}</title>
-</head>
-<body>
-    {% include 'navbar.html' %}
+
+{% include 'head.html' %}
 
 <div class="container">
 
@@ -47,6 +39,4 @@
     </div>
 </div>
 
-{% bootstrap_javascript jquery='full' %}
-</body>
-</html>
+{% include 'footer.html' %}
