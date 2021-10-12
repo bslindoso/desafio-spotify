@@ -3,21 +3,19 @@ from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as auth_login
+from core.classes.Playlist import Playlist
 import requests
-import base64
 from urllib.parse import urlencode
 from .forms import SearchForm, AddMusicForm
 from .models import AccessTokenScoped
 import environ
+from core.auth import auth, authScope, get_access_token_scoped
 
 #Environ Settings
 env = environ.Env()
 environ.Env.read_env()
 
 playlist_id = env.str('PLAYLIST_ID')
-client_id = env.str('CLIENT_ID')
-client_secret = env.str('CLIENT_SECRET')
-redirect_uri = env.str('REDIRECT_URI')
 
 #View inicial que mostra as músicas da playlist e dá as opções do sistema
 def index(request):
@@ -33,31 +31,14 @@ def index(request):
         else:
             access_token = auth()
 
-        # OBTER PLAYLIST NO SPOTIFY
-        headers = {
-            "Authorization": f"Bearer {access_token}"
-        }
-        endpoint = f"https://api.spotify.com/v1/playlists/{playlist_id}"
-        r = requests.get(endpoint, headers=headers)
-        results_playlist = r.json()
-
-        # Salva informações da playlist como  nome, capa, músicas e as imagens delas
-        playlist_name = results_playlist["name"]
-        images = results_playlist["images"]
-        playlist_cover = images[0]
-        playlist_cover = playlist_cover['url']
-        tracks = results_playlist['tracks']
-        items = tracks['items']
-
-        link_playlist_1 = results_playlist['external_urls']
-        link_playlist = link_playlist_1['spotify']
-
+        playlist = Playlist(access_token, playlist_id) # Instancia a playlist utilizando a classe Playlist
+      
         # Cria variiável de contexto a ser enviada para o template
         context = {
-            'playlist_name': playlist_name,
-            'playlist_cover': playlist_cover,
-            'link_playlist': link_playlist,
-            'items': items,
+            'playlist_name': playlist.get_name(),
+            'playlist_cover': playlist.get_cover_url(),
+            'link_playlist': playlist.get_link_spotify(),
+            'items': playlist.get_items(),
             'logged': True
         }
         return render(request, 'index.html', context)
@@ -121,6 +102,7 @@ def add_item_playlist(request):
 
         return render(request, 'add_item_playlist_2.html', context)
 
+# Adiciona uma música na playlist
 def add_success(request):
     if str(request.user) == 'AnonymousUser': #verifica se o usuário está logado no sistema
         return redirect('user_in')
@@ -151,6 +133,7 @@ def add_success(request):
                 messages.error(request, f'Algo de errado aconteceu. Você gerou o seu Token na página inicial? --- {r.text}')
                 return render(request, 'add_success.html')
 
+# Remove uma música da playlist
 def del_success(request):
     if str(request.user) == 'AnonymousUser': #verifica se o usuário está logado no sistema
         return redirect('user_in')
@@ -219,69 +202,7 @@ def user_in(request):
         form_login = AuthenticationForm()
     return render(request, 'login.html', {'form_login': form_login})
 
+# Desloga usuário
 def user_out(request):
     logout(request)
     return redirect('index')
-
-def authScope(code):
-
-    # Credenciais do APP
-    global client_id, client_secret
-    client_creds = f"{client_id}:{client_secret}"
-    client_creds_b64 = base64.b64encode(client_creds.encode())
-
-    # Consulta o token para uso posterior
-    token_url = 'https://accounts.spotify.com/api/token'
-    token_data = {
-        "grant_type": "authorization_code",
-        "code": f"{code}",
-        "redirect_uri": f"{redirect_uri}"
-    }
-    token_headers = {
-        "Authorization": f"Basic {client_creds_b64.decode()}"  # base64 encoded
-    }
-
-    # Requisição para o endpoint api/token
-    r = requests.post(token_url, data=token_data, headers=token_headers)
-
-    valid_request = r.status_code in range(200, 299)
-
-    # Token de Acesso
-    if valid_request:
-        token_response_data = r.json()
-        access_token = token_response_data['access_token']
-        return access_token
-    else:
-        print(f'Erro: {r} --- {r.text}')
-
-def auth():
-
-    # Credenciais do APP
-    global client_id, client_secret
-    client_creds = f"{client_id}:{client_secret}"
-    client_creds_b64 = base64.b64encode(client_creds.encode())
-
-
-    # Consulta o token para uso posterior
-    token_url = 'https://accounts.spotify.com/api/token'
-    token_data = {
-        "grant_type": "client_credentials"
-    }
-    token_headers = {
-        "Authorization": f"Basic {client_creds_b64.decode()}"  # base64 encoded
-    }
-
-    # Requisição para o endpoint api/token
-    r = requests.post(token_url, data=token_data, headers=token_headers)
-
-    valid_request = r.status_code in range(200, 299)
-
-    # Token de Acesso
-    if valid_request:
-        token_response_data = r.json()
-        access_token = token_response_data['access_token']
-        return access_token
-
-def get_access_token_scoped():
-    access_token_scoped = AccessTokenScoped.objects.last()
-    return access_token_scoped
