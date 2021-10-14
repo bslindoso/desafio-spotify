@@ -1,14 +1,6 @@
-# from core.classes.Playlist import Playlist
+from requests.api import request
+from core.views import index
 
-#Testar a classe Playlist
-#Testar se está sendo enviado um dict como parâmetro
-
-# def test_se_o_paramento_eh_um_dicionario():
-#     dic
-#     playlist = Playlist()
-#     assert
-
-
-
-
-#Testar as funções de autenticação
+def test_se_usuario_nao_esta_logado_entao_redireciona_para_o_login():
+    request.user = "AnonymousUser"
+    assert index(request) == 1
