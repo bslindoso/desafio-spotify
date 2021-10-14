@@ -7,7 +7,7 @@ readme = "README.md"
 repository = "https://github.com/bslindoso/django1"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = ">=3.9.5"
 bootstrap4 = "0.1.0"
 certifi = "2020.12.5"
 chardet = "4.0.0"

@@ -6,7 +6,7 @@ from django.contrib.auth import login as auth_login
 from core.classes.Playlist import Playlist
 import requests
 from urllib.parse import urlencode
-from .forms import SearchForm, AddMusicForm
+from .forms import SearchForm, AddMusicForm, PlaylistIdForm
 from .models import AccessTokenScoped
 import environ
 from core.auth import auth, authScope, get_access_token_scoped
@@ -17,9 +17,34 @@ environ.Env.read_env()
 
 playlist_id = env.str('PLAYLIST_ID')
 
-#View inicial que mostra as músicas da playlist e dá as opções do sistema
 def index(request):
+    if str(request.user) == 'AnonymousUser': #verifica se o usuário está logado no sistema
+        return redirect('user_in')
+    else:
+        if request.method == 'GET' and 'code' in request.GET: # verifica se o método é GET e se a requisição possui o parâmetro code
+            code = request.GET['code']
+            access_token = authScope(code)
+            b = AccessTokenScoped(access_token_scoped=access_token) # Gera o token
+            b.save() #salva no DB
+        else:
+            access_token = auth()
+            
+        form = PlaylistIdForm(request.POST or None)
+        if str(request.method) == 'POST' :
+            if form.is_valid():
+                global playlist_id 
+                playlist_id = form.cleaned_data['playlist_id']
+                messages.success(request, f'Playlist {playlist_id} cadastrada com sucesso')
 
+        # Cria variiável de contexto a ser enviada para o template
+        context = {
+            'form' : form,
+            'logged': True
+        }
+        return render(request, 'index.html', context)  
+
+#View inicial que mostra as músicas da playlist e dá as opções do sistema
+def spotify(request):
     if str(request.user) == 'AnonymousUser': #verifica se o usuário está logado no sistema
         return redirect('user_in')
     else:
@@ -39,6 +64,23 @@ def index(request):
             'playlist_cover': playlist.get_cover_url(),
             'link_playlist': playlist.get_link_spotify(),
             'items': playlist.get_items(),
+            'logged': True
+        }
+        return render(request, 'spotify.html', context)
+
+def reset_playlist(request):
+    if str(request.user) == 'AnonymousUser': #verifica se o usuário está logado no sistema
+        return redirect('user_in')
+    else:
+        global playlist_id
+        playlist_id = env.str('PLAYLIST_ID')
+        messages.warning(request, f'Playlist {playlist_id} resetada com sucesso')
+
+        form = PlaylistIdForm(request.POST or None)
+
+
+        context = {
+            'form' : form,
             'logged': True
         }
         return render(request, 'index.html', context)
@@ -192,7 +234,6 @@ def user_in(request):
         username = request.POST["username"]
         password = request.POST["password"]
         user = authenticate(request, username=username, password=password)
-        print(user)
         if user is not None:
             auth_login(request, user)
             return redirect('index')
