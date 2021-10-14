@@ -1,10 +1,10 @@
 # Desafio Weni - Dev Django Júnior
 
-Este projeto tem como intuito listar uma playlist específica (ID da playlist está imbutido), e o dono da playlist poderá se autenticar (obter o token) e gerenciar ela, adicionando ou removendo tracks.
+Este projeto tem como intuito listar uma playlist específica (antes o ID da playlist estava imbutido, agora é possível informar sua playlist), e o dono da playlist poderá se autenticar (obter o token) e gerenciar ela, adicionando ou removendo tracks.
 
 Projeto desenvolvido inicialmente como avaliação para o cargo de Analista de Suporte N3. Atualizado como avaliação para o cargo Dev Django Júnior.
 
-### Resumo do desafio:
+## Resumo do desafio:
 
 - [x]  Usar gerenciador de dependências Poetry
 - Instalado e configurado o Poetry como gestor de dependências
@@ -29,7 +29,7 @@ Projeto desenvolvido inicialmente como avaliação para o cargo de Analista de S
 - [ ]  Cobertura de testes com a lib "coverage"
 - Instalado e adicionado os pacotes pytest-cov e coverage como dev-dependencies no poetry. Mas infelizmente não possuo nenhum teste válido no projeto.
 
-### Melhorias no projeto:
+## Melhorias no projeto:
 
 - Criada a possibilidade do usuário informar o ID da sua playlist e gerenciá-lo através do APP (antes o ID da playlist era uma constante, ou seja, a playlist era fixa)
 - Funções de autenticação foram removidas de views.py e adicionadas ao arquivo auth.py;
@@ -37,3 +37,7 @@ Projeto desenvolvido inicialmente como avaliação para o cargo de Analista de S
 - Ajustado o nome de algumas constantes para o padrão "capital letters with underscore";
 - Reduzida consideravelmente a view index();
 - Autenticação utilizando nativamente o Django
+
+## IMPORTANTE (AO AVALIADOR)
+- Para você conseguir manipular a Playlist, você deverá ser o proprietário dela. Ou seja, não há como manipular Playlists de terceiros ou colaborativas através da API.
+- Além disso, seu usuário do Spotify deverá ser cadastrado no https://developer.spotify.com/dashboard/, pois o APP se encontra em Developer Mode. Caso queira testar o sistema, favor mandar um e-mail para <brunolindoso@gmail.com> com seu nome completo e seu e-mail cadastrado no Spotify que adiciono você como usuário do APP. (Isso é uma restrição do Spotify)
