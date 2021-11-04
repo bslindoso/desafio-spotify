@@ -1,4 +1,4 @@
-# Desafio Weni - Dev Django Júnior
+# Desafio Spotify
 
 Este projeto tem como intuito listar uma playlist específica (antes o ID da playlist estava imbutido, agora é possível informar sua playlist), e o dono da playlist poderá se autenticar (obter o token) e gerenciar ela, adicionando ou removendo tracks.
 
