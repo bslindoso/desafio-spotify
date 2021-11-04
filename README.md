@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-# Desafio Weni
-
-Este projeto tem como intuito listar uma playlist específica (ID da playlist está imbutido), e o dono da playlist poderá se autenticar (obter o token) e gerenciar ela, adicionando ou removendo tracks.
-=======
 # Desafio Spotify
 
 Este projeto tem como intuito listar uma playlist específica (antes o ID da playlist estava imbutido, agora é possível informar sua playlist), e o dono da playlist poderá se autenticar (obter o token) e gerenciar ela, adicionando ou removendo tracks.
@@ -42,4 +37,4 @@ Para desenvolver este projeto, foi necessário conhecimentos de:
 ## IMPORTANTE (AO AVALIADOR)
 - Para você conseguir manipular a Playlist, você deverá ser o proprietário dela. Ou seja, não há como manipular Playlists de terceiros ou colaborativas através da API.
 - Além disso, seu usuário do Spotify deverá ser cadastrado no https://developer.spotify.com/dashboard/, pois o APP se encontra em Developer Mode. Caso queira testar o sistema, favor mandar um e-mail para <brunolindoso@gmail.com> com seu nome completo e seu e-mail cadastrado no Spotify que adiciono você como usuário do APP. (Isso é uma restrição do Spotify)
->>>>>>> update-desafio-spotify
+
