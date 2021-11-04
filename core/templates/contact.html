@@ -1,0 +1,38 @@
+{% load static %}
+{% load bootstrap4 %}
+
+{% include 'head.html' %}
+
+<div class="container">
+
+    <div class="jumbotron" style="padding: 32px;">
+        {% bootstrap_messages %}
+        <h1 class="display-4">Olá, galerinha!</h1>
+
+        <div class="row">
+            <div class="col-sm">
+                <center><img src="{% static 'images/bruno.jpg' %}" alt="Foto de Bruno Lindoso" class="img-thumbnail" style="width: 85%" id="lindoso"></center>
+            </div>
+
+            <div class="col-sm">
+                <p class="lead">Me chamo <strong>Bruno Lindoso</strong> e sou programador Python/Django. </p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item list-group-item-info"><strong>Contato:</strong></li>
+                    <li class="list-group-item"><strong>E-mail:</strong> brunolindoso@gmail.com</li>
+                    <li class="list-group-item"><strong>Github:</strong> <a href="https://github.com/bslindoso/" target="_blank">github.com/bslindoso/</a>
+                        <img src="{% static 'images/github.png' %}" alt="Github" id="github" title="Github">
+                    </li>
+                    <li class="list-group-item"><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/brunolindosodev/" target="_blank">linkedin.com/in/brunolindosodev/</a>
+                        <img src="{% static 'images/linkedin.png' %}" alt="LinkedIn" id="linkedin" title="LinkedIn">
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+        <hr class="my-4">
+        <a class="btn btn-info btn-lg" href="{% url 'index' %}" role="button">Voltar</a>
+
+    </div>
+</div>
+
+{% include 'footer.html' %}

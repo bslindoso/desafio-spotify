@@ -1,34 +1,7 @@
 {% load static %}
 {% load bootstrap4 %}
 
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    {% bootstrap_css %}
-    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
-    <title>Adicionado com sucesso</title>
-</head>
-<body>
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #00DED3;">
-    <a class="navbar-brand" href="{% url 'index' %}">
-        <img src="{% static 'images/weni.png' %}" width="40" height="30" class="d-inline-block align-top" alt="">
-        Desafio Weni
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Alterna navegação">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#">Spotify <span class="sr-only">(Página atual)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#">Sobre mim</a>
-            </li>
-        </ul>
-    </div>
-</nav>
+{% include 'head.html' %}
 
 <div class="container">
     <br>    <br>
@@ -36,11 +9,8 @@
     <br>
     {% bootstrap_messages %}
     <br>
-    <center><a href="{% url 'index' %}" class="btn btn-lg btn-info">Ver minha Playlist</a></center>
+    <center><a href="{% url 'spotify' %}" class="btn btn-lg btn-info">Ver minha Playlist</a></center>
 
 </div>
 
-
-{% bootstrap_javascript jquery='full' %}
-</body>
-</html>
+{% include 'footer.html' %}

@@ -1,98 +1,46 @@
 {% load static %}
 {% load bootstrap4 %}
 
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    {% bootstrap_css %}
-    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
-    <title>{{nome_develop}} - TESTE</title>
-</head>
-<body>
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #00DED3;">
-    <a class="navbar-brand" href="{% url 'index' %}">
-        <img src="{% static 'images/weni.png' %}" width="40" height="30" class="d-inline-block align-top" alt="">
-        Desafio Weni
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Alterna navegação">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="{% url 'index' %}">Spotify <span class="sr-only">(Página atual)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'contato' %}">Sobre mim</a>
-            </li>
-        </ul>
-    </div>
-</nav>
+{% include 'head.html' %}
 
 <div class="container">
-    <br><br>
+    <br>
+    {% bootstrap_messages %}
+    <br>
+    <form action="{% url 'index' %}" method="post"  class="form" autocomplete="off">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% buttons %}            
+            <button type="submit" class="btn btn-info btn-lg">Salvar sua ID</button>
+        {% endbuttons %}
+    </form>
+    <br>
+    <input type="button" class="btn btn-danger btn-lg" onclick="requestAuthorization()" value="Obtenha o seu Token">
+    <a class="btn btn-info btn-lg" href="{% url 'spotify' %}" role="button">Visualizar sua Playlist</a>
+    <a class="btn btn-warning btn-lg" href="{% url 'reset_playlist' %}" role="button">Playlist padrão do desafio</a>
 
-    <div class="row">
-        <div class="col-lg-4 col-md-5 col-sm-6">
-            <div class="table-danger">
-                <hr>
-                <center><h2>ATENÇÃO</h2></center>
-                <hr>
-                <center><p class="lead">Antes de adicionar uma música na Playlist, <strong style="color: red;">Obtenha o seu Token</strong> clicando no botão de mesmo nome. Em seguida, faça login e <strong>ACEITE</strong> os termos do Spotify.</p></center>
-                <hr>
-            </div>
-            <figure class="figure float-center">
-              <img src="{{ capa_playlist }}" class="figure-img img-fluid rounded"  alt="capa playlist" title="Capa da Playlist" id="capa_playlist">
-              <strong><figcaption class="figure-caption text-center">CAPA DA PLAYLIST</figcaption></strong>
-            </figure>
 
-        </div>
-        <div class="col-lg-8 col-md-7 col-sm-6">
-            <center><h1>Playlist: {{ nome_playlist }}</h1></center>
-            <br>
-            <center>
-                <input type="button" class="btn btn-danger btn-lg" onclick="requestAuthorization()" value="Obtenha o seu Token">
-                <a class="btn btn-info btn-lg" href="{% url 'search_item' %}" role="button">Adicione uma música à Playlist</a>
-            </center>
-            <br>
-
-            <table class="table table-sm table-dark table-striped">
-                <thead>
-                <tr style="background-color: #FFFFFF !important;"><td colspan="5"><center><a href="{{ link_playlist }}" target="_blank">Clique aqui para abrir a playlist</a></center></td></tr>
-                <tr>
-                    <th scope="col">Nome da Música</th>
-                    <th scope="col">Artista</th>
-                    <th scope="col">Álbum</th>
-                    <th scope="col">Ouça no Spotify</th>
-                    <th scope="col">Remover da playlist</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for item in items %}
-                    <tr>
-                        <td scope="row" style="text-decoration: none;"><a href="{{ item.track.external_urls.spotify }}" target="_blank">{{ item.track.name }}</a></td>
-                        <td>{{ item.track.artists.0.name }}</td>
-                        <td>{{ item.track.album.name }}</td>
-                        <td><center><a href="{{ item.track.external_urls.spotify }}" target="_blank">Link</a></center></td>
-                        <td>
-                            <form action="{% url 'del_success' %}" method="post"  class="form" autocomplete="off">
-                                {% csrf_token %}
-                                <input type="hidden" value="{{ item.track.id }}" name="track_id" id="track_id">
-                                {% buttons %}
-                                    <center><button type="submit" class="btn btn-danger"> <i class="fas fa-trash"></i> </button></center>
-                                {% endbuttons %}
-                            </form>
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
+    <br>
+    <div class="table-info">
+        <hr>
+        <center><h2>IMPORTANTE</h2></center>
+        <hr>
+        <ul>
+            <li class="lead">Para você conseguir manipular a Playlist, você deverá ser o <strong style="color: red;">proprietário</strong> dela. Ou seja, não há como manipular Playlists de terceiros ou colaborativas através da API.</li>
+            <li class="lead">Além disso, seu usuário do Spotify deverá ser cadastrado no <a href="https://developer.spotify.com/dashboard/">https://developer.spotify.com/dashboard/</a>, pois o APP se encontra em <strong>Developer Mode</strong></li>
+        </ul>
+        <hr>
     </div>
+    <div class="table-danger">
+        <hr>
+        <center><h2>ATENÇÃO</h2></center>
+        <hr>
+        <ul>
+            <li class="lead">Antes de adicionar uma música na Playlist, <strong style="color: red;">Obtenha o seu Token</strong> clicando no botão de mesmo nome. Em seguida, faça login e <strong>ACEITE</strong> os termos do Spotify.</li>
+        </ul>
+        <hr>
+    </div>
+    
 </div>
-{% bootstrap_javascript jquery='full' %}
-<script type="text/javascript" src="{% static 'js/js.js' %}"></script>
-</body>
-</html>
+
+{% include 'footer.html' %}

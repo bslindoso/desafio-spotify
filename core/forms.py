@@ -5,3 +5,6 @@ class SearchForm(forms.Form):
 
 class AddMusicForm(forms.Form):
     add_track_id = forms.CharField(label='Id da Música', widget=forms.HiddenInput())
+
+class PlaylistIdForm(forms.Form):
+    playlist_id = forms.CharField(label='Playlist ID')

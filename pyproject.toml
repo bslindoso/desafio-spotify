@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "django1"
+version = "0.1.0"
+description = "Este projeto tem como intuito listar uma playlist específica (ID da playlist está imbutido), e o dono da playlist poderá se autenticar (obter o token) e gerenciar ela, adicionando ou removendo tracks."
+authors = ["Bruno Lindoso <brunolindoso@gmail.com>"]
+readme = "README.md"
+repository = "https://github.com/bslindoso/django1"
+
+[tool.poetry.dependencies]
+python = ">=3.9.5"
+bootstrap4 = "0.1.0"
+certifi = "2020.12.5"
+chardet = "4.0.0"
+Django = "3.2.3"
+django-bootstrap4 = "3.0.1"
+django-environ = "0.7.0"
+django-stdimage = "5.3.0"
+requests = "2.25.1"
+soupsieve = "2.2.1"
+sqlparse = "0.4.1"
+urllib3 = "1.26.4"
+whitenoise = "5.2.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.5"
+pytest-cov = "^3.0.0"
+coverage = "^6.0.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
