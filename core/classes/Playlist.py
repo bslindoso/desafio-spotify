@@ -1,19 +1,18 @@
 import requests
+from core.classes.track import Track
+
 class Playlist():
     def __init__(self, access_token, playlist_id):
-   
         # Faz uma requisição para a API do Spotify consultando as informações da playlist
         results_playlist = self.__get_playlist(access_token, playlist_id)
 
-        self.__id = results_playlist["id"]
         self.__name = results_playlist["name"]
-        self.__images = results_playlist["images"]
-        self.__cover = self.__images[0]
-        self.__cover_url = self.__cover['url']
-        self.__tracks = results_playlist['tracks']
-        self.__items = self.__tracks['items']
-        self.__links = results_playlist['external_urls']
-        self.__link_spotify = self.__links['spotify']
+        self.__cover_url = results_playlist["images"][0]['url']
+        self.__items = results_playlist['tracks']['items']
+        self.__link_spotify = results_playlist['external_urls']['spotify']
+
+        # Inicia a geração da tracklist
+        self.__track_list = self.__create_track_list() 
 
     # Faz uma requisição para a API do Spotify consultando as informações da playlist
     def __get_playlist(self, access_token, playlist_id):
@@ -23,17 +22,26 @@ class Playlist():
         results_playlist = r.json()
         return results_playlist
 
-    def get_id(self):
-        return self.__id
-    
-    def get_name(self):
+    # Cria a track list da playlist com o retorno da requisição (self.__items)
+    def __create_track_list(self):
+        count = 0
+        tracks = []
+        for item in self.__items:
+            tracks.append(Track(item))
+            count += 1
+        return tracks
+
+    @property
+    def name(self):
         return self.__name
 
-    def get_cover_url(self):
+    @property
+    def cover_url(self):
         return self.__cover_url
 
-    def get_link_spotify(self):
+    @property
+    def link_spotify(self):
         return self.__link_spotify
-    
-    def get_items(self):
-        return self.__items
+
+    def __getitem__(self, item):
+        return self.__track_list[item]

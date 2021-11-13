@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as auth_login
-from core.classes.Playlist import Playlist
+from core.classes.playlist import Playlist
 import requests
 from urllib.parse import urlencode
 from .forms import SearchForm, AddMusicForm, PlaylistIdForm
@@ -57,13 +57,10 @@ def spotify(request):
             access_token = auth()
 
         playlist = Playlist(access_token, playlist_id) # Instancia a playlist utilizando a classe Playlist
-      
+
         # Cria variiável de contexto a ser enviada para o template
         context = {
-            'playlist_name': playlist.get_name(),
-            'playlist_cover': playlist.get_cover_url(),
-            'link_playlist': playlist.get_link_spotify(),
-            'items': playlist.get_items(),
+            'playlist' : playlist,
             'logged': True
         }
         return render(request, 'spotify.html', context)
@@ -126,7 +123,6 @@ def add_item_playlist(request):
 
             # PESQUISAR POR ARTISTA OU MUSICA COM QUERY
             headers = {
-                # "Authorization": f"Bearer {get_access_token_scoped()}"
                 "Authorization": f"Bearer {access_token}"
             }
             endpoint = "https://api.spotify.com/v1/search"
@@ -155,7 +151,7 @@ def add_success(request):
         if str(request.method) == 'POST':
             # Autenticando na API do Spotify
             track_id = request.POST.get('track_id')
-            print(f'Track ID: {track_id}')
+            
             headers = {
                 "Authorization": f"Bearer {latest_token}",
                 "Content-Type": "application/json"
@@ -186,7 +182,6 @@ def del_success(request):
         if str(request.method) == 'POST':
             # Autenticando na API do Spotify
             track_id = request.POST.get('track_id')
-            print(f'Track ID: {track_id}')
 
             headers = {
                 "Authorization": f"Bearer {latest_token}",
@@ -195,15 +190,8 @@ def del_success(request):
             }
 
             data = '{"tracks":[{"uri":' +  f'"spotify:track:{track_id}"' + '}]}'
-
-            print(f'Lista das Tracks: {data}')
-
             endpoint = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
             r = requests.delete(endpoint, data=data, headers=headers)
-
-            print(f'Endpoint: {endpoint}')
-            print(f'Response: {r}')
-            print(f'Response: {r.text}')
             results_del_playlist = r.json()
 
             if r.status_code in range(200, 299):

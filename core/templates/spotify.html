@@ -16,13 +16,13 @@
                 <hr>
             </div>
             <figure class="figure float-center">
-              <img src="{{ playlist_cover }}" class="figure-img img-fluid rounded"  alt="capa playlist" title="Capa da Playlist" id="playlist_cover">
+              <img src="{{ playlist.cover_url }}" class="figure-img img-fluid rounded"  alt="capa playlist" title="Capa da Playlist" id="playlist_cover">
               <strong><figcaption class="figure-caption text-center">CAPA DA PLAYLIST</figcaption></strong>
             </figure>
 
         </div>
         <div class="col-lg-8 col-md-7 col-sm-6">
-            <center><h1>Playlist: {{ playlist_name }}</h1></center>
+            <center><h1>Playlist: {{ playlist.name }}</h1></center>
             <br>
             <center>
                 <input type="button" class="btn btn-danger btn-lg" onclick="requestAuthorization()" value="Obtenha o seu Token">
@@ -33,7 +33,7 @@
 
             <table class="table table-sm table-dark table-striped">
                 <thead>
-                <tr style="background-color: #FFFFFF !important;"><td colspan="5"><center><a href="{{ link_playlist }}" target="_blank">Clique aqui para abrir a playlist</a></center></td></tr>
+                <tr style="background-color: #FFFFFF !important;"><td colspan="5"><center><a href="{{ playlist.link_spotify }}" target="_blank">Clique aqui para abrir a playlist</a></center></td></tr>
                 <tr>
                     <th scope="col">Nome da Música</th>
                     <th scope="col">Artista</th>
@@ -43,16 +43,16 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for item in items %}
+                {% for track in playlist %}
                     <tr>
-                        <td scope="row" style="text-decoration: none;"><a href="{{ item.track.external_urls.spotify }}" target="_blank">{{ item.track.name }}</a></td>
-                        <td>{{ item.track.artists.0.name }}</td>
-                        <td>{{ item.track.album.name }}</td>
-                        <td><center><a href="{{ item.track.external_urls.spotify }}" target="_blank">Link</a></center></td>
+                        <td scope="row" style="text-decoration: none;"><a href="{{ track.url }}" target="_blank">{{ track.name }}</a></td>
+                        <td>{{ track.artist_name }}</td>
+                        <td>{{ track.album }}</td>
+                        <td><center><a href="{{ track.url }}" target="_blank">Link</a></center></td>
                         <td>
                             <form action="{% url 'del_success' %}" method="post"  class="form" autocomplete="off">
                                 {% csrf_token %}
-                                <input type="hidden" value="{{ item.track.id }}" name="track_id" id="track_id">
+                                <input type="hidden" value="{{ track.id }}" name="track_id" id="track_id">
                                 {% buttons %}
                                     <center><button type="submit" class="btn btn-danger"> <i class="fas fa-trash"></i> </button></center>
                                 {% endbuttons %}
